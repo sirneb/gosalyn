@@ -19,27 +19,34 @@ class Gosalyn.Views.Dashboards.EditView extends Backbone.View
     e.stopPropagation()
 
     @model.update()
+    @userDfpCampaigns.update()
+    @userAdwordsCustomers.update()
 
   initialize: ->
     @model.on 'sync', @render, @
-    # @model.on 'serverAttrSaved', @render, @
 
   render: ->
     @$el.html @template(@model.forTemplate())
 
-    claimableDfpCampaigns = new Gosalyn.Models.ClaimableDfpCampaigns()
-    userDfpCampaigns = new Gosalyn.Models.UserDfpCampaigns()
+    availableDfpCampaigns = new Gosalyn.Models.AvailableDfpCampaigns()
+    @userDfpCampaigns = new Gosalyn.Models.UserDfpCampaigns()
 
-    claimableDfpCampaigns.fetch()
-    userDfpCampaigns.fetch()
+    availableAdwordsCustomers = new Gosalyn.Models.AvailableAdwordsCustomers()
+    @userAdwordsCustomers = new Gosalyn.Models.UserAdwordsCustomers()
 
     transparencyView = new Gosalyn.Views.Dashboards.EditLowTransparencyView(model: @model)
+
     dfpView = new Gosalyn.Views.Dashboards.EditDfpCampaignsView
-      claimable: claimableDfpCampaigns,
-      userAssociated: userDfpCampaigns
+      available: availableDfpCampaigns,
+      claimedByUser: @userDfpCampaigns
+
+    semView = new Gosalyn.Views.Dashboards.EditAdwordsCustomersView
+      available: availableAdwordsCustomers,
+      claimedByUser: @userAdwordsCustomers
 
     $('#low-transparency').html transparencyView.render().el
     $('#dfp-campaigns').html dfpView.el
+    $('#adwords-customers').html semView.el
 
     $(".chosen-select").chosen(width: '66%')
     @
