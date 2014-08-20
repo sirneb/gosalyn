@@ -2,7 +2,7 @@ Gosalyn.Views.Dashboards ||= {}
 
 class Gosalyn.Views.Dashboards.EditCampaignsView extends Backbone.View
   # configuration
-  template: HandlebarsTemplates["dashboards/edit/dfp_campaigns"]
+  template: HandlebarsTemplates["dashboards/edit/campaigns"]
   id: ''
   availableCampaignClass: Backbone.View
 

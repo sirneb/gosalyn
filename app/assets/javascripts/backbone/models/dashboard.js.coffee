@@ -8,7 +8,7 @@ Backbone.ajax = _.wrap Backbone.ajax, (fn, params) ->
 Gosalyn.Models.Dashboard = Backbone.Model.extend
   urlRoot: "http://#{window.adapterHost}/api/management/users"
 
-  # cached data on the server
+  # cached data from the server
   _serverAttr: {}
 
   parse: (response) ->
@@ -23,9 +23,13 @@ Gosalyn.Models.Dashboard = Backbone.Model.extend
   transparencyChanged: ->
     @_compareWithServerData 'low_transparency'
 
+  hasAnalyticsChanged: ->
+    @_compareWithServerData 'has_analytics'
+
   forTemplate: ->
     _.extend @toJSON(),
-      'transparencyChanged': @transparencyChanged()
+      'transparencyChanged': @transparencyChanged(),
+      'hasAnalyticsChanged': @hasAnalyticsChanged()
 
   changedAttrs: ->
     serverChanged = {}
